@@ -51,7 +51,8 @@ echo "Project $tenant has been created"
 
 oc project $tenant
 
-echo
+echo "setting perms"
+oc adm policy add-scc-to-user privileged -n $tenant -z default
 
 echo "Creating Jmeter slave nodes"
 

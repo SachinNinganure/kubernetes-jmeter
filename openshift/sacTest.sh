@@ -5,8 +5,6 @@
 
 working_dir=`pwd`
 
-#Get namesapce variable
-# tenant=`awk '{print $NF}' $working_dir/tenant_export`
 
 read -p 'Enter path to the jmx file ' jmx
 
@@ -17,19 +15,15 @@ then
     exit
 fi
 
-#Get Master pod details
 
-#master_pod=`kubectl get pod -n loadtesting | grep jmeter-master | awk '{print $1}'`
+master_pod=`oc get pod  | grep jmeter-master | awk 'NR==1{print $1}'`
 
-master_pod=`oc get pod  | grep jmeter-master | awk 'NR==2{print $1}'`
-
-# kubectl cp $jmx -n $tenant $master_pod:/$jmx
 
 #oc cp $jmx $master_pod:/$jmx
 
 oc cp cloudssky.jmx $master_pod:/jmeter/cloudssky.jmx
-oc cp load_test2 $master_pod:/jmeter/load_test2
+
 ## Echo Starting Jmeter load test
 
-oc exec  $master_pod -- /bin/bash /jmeter/load_test2 /jmeter/cloudssky.jmx
+oc exec  $master_pod -- /bin/bash /jmeter/load_test cloudssky.jmx
 #oc exec -ti $master_pod -- /bin/bash /jmeter/load_test1 cloudssky.jmx
