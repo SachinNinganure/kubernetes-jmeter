@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #Create multiple Jmeter namespaces on an existing kuberntes cluster
-#Started On January 23, 2018
-
+#Author: Sachin Ninganure
 working_dir=`pwd`
 
 echo "checking if oc is present"
@@ -44,7 +43,7 @@ fi
 echo
 echo "Creating project: $tenant"
 
-oc new-project $tenant --description="jmeter cluster for loadtesting" --display-name="loadtesting"
+oc new-project $tenant --description="jmeter cluster for loadtesting" --display-name="sninganu-loadtesting"
 
 
 echo "Project $tenant has been created"
@@ -56,17 +55,12 @@ oc adm policy add-scc-to-user privileged -n $tenant -z default
 
 echo "Creating Jmeter slave nodes"
 
-# nodes=`kubectl get no | egrep -v "master|NAME" | wc -l`
+nodes=`oc get node | egrep -v "master|NAME" | wc -l`
 
-# echo
+echo "Number of worker nodes on this cluster are " $nodes
 
-# echo "Number of worker nodes on this cluster is " $nodes
+echo "Creating Jmeter slave replicas and service"
 
-echo
-
-#echo "Creating $nodes Jmeter slave replicas and service"
-
-echo
 
 oc create -f $working_dir/jmeter_slaves_deploymentconfig.yaml
 
@@ -86,10 +80,9 @@ oc create -f $working_dir/jmeter_influxdb_configmap.yaml
 oc create -f $working_dir/jmeter_influxdb_deploymentconfig.yaml
 
 oc create -f $working_dir/jmeter_influxdb_svc.yaml
-echo "Creating Grafana Deployment"
 
-#oc create -f $working_dir/jmeter_grafana_deploy.yaml
-oc create -f /home/sninganu/JM/jmeter-kubernetes/jmeter_grafana_deploy.yaml
+echo "Creating Grafana Deployment"
+oc create -f $working_dir/jmeter_grafana_deploy.yaml
 oc create -f $working_dir/jmeter_grafana_svc.yaml
 
 echo "Printout Of the $tenant Objects"

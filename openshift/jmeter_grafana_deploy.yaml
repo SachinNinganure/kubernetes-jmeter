@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jmeter-grafana
@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: grafana
-        image: grafana/grafana
+        image: grafana/grafana:5.2.0
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
           protocol: TCP

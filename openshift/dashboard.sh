@@ -3,8 +3,7 @@
 working_dir=`pwd`
 
 #Get namesapce variable
-# tenant=`awk '{print $NF}' $working_dir/tenant_export`
-
+tenant=`awk '{print $NF}' $working_dir/tenant_export`
 ## Create jmeter database automatically in Influxdb
 
 echo "Creating Influxdb jmeter Database"
@@ -12,26 +11,22 @@ echo "Creating Influxdb jmeter Database"
 ##Wait until Influxdb Deployment is up and running
 ##influxdb_status=`oc get po -n $tenant | grep influxdb-jmeter | awk '{print $2}' | grep Running
 
-influxdb_pod=`oc get pod | grep influxdb | awk 'NR==2{print $1}'`
+influxdb_pod=`oc get pods|grep influxdb-jmeter|grep Running|awk '{print $1}'`
 oc exec -ti $influxdb_pod -- influx -execute 'CREATE DATABASE jmeter'
 
 ## make sure the db is created
-
-# $ oc rsh $influxdb_pod 
 
 oc exec -ti $influxdb_pod -- influx -execute 'SHOW DATABASES'
 
 ## Create the influxdb datasource in Grafana
 
 echo "Creating the Influxdb data source"
-grafana_pod=`oc get pod | grep jmeter-grafana | awk 'NR==1{print $1}'`
-
+grafana_pod=`oc get pod | grep jmeter-grafana | grep Running|awk '{print $1}'`
 ## Make load test script in Jmeter master pod executable
 
 #Get Master pod details
 
-master_pod=`oc get pod | grep jmeter-master | awk '{print $1}'`
-
+master_pod=`oc get pod | grep jmeter-master| grep Running|awk '{print $1}'`
 # oc exec -ti $master_pod -- cp -r /load_test /jmeter/load_test
 
 # oc exec -it $master_pod -- /bin/bash -- chmod 755 /jmeter/load_test
