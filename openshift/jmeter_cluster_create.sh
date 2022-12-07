@@ -63,28 +63,28 @@ echo "Number of worker nodes on this cluster are " $nodes
 echo "Creating Jmeter slave replicas and service"
 
 
-oc create -f $working_dir/jmeter_slaves_deploymentconfig.yaml
+oc create -f jmeter_slaves_deploymentconfig.yaml
 
-oc create -f $working_dir/jmeter_slaves_svc.yaml
+oc create -f jmeter_slaves_svc.yaml
 
 echo "Creating Jmeter Master"
 
-oc create -f $working_dir/jmeter_master_configmap.yaml
+oc create -f jmeter_master_configmap.yaml
 
-oc create -f $working_dir/jmeter_master_deploymentconfig.yaml
+oc create -f jmeter_master_deploymentconfig.yaml
 
 
 echo "Creating Influxdb and the service"
 
-oc create -f $working_dir/jmeter_influxdb_configmap.yaml
+oc create -f jmeter_influxdb_configmap.yaml
 
-oc create -f $working_dir/jmeter_influxdb_deploymentconfig.yaml
+oc create -f jmeter_influxdb_deploymentconfig.yaml
 
-oc create -f $working_dir/jmeter_influxdb_svc.yaml
+oc create -f jmeter_influxdb_svc.yaml
 
 echo "Creating Grafana Deployment"
-oc create -f $working_dir/jmeter_grafana_deploy.yaml
-oc create -f $working_dir/jmeter_grafana_svc.yaml
+oc create -f jmeter_grafana_deploy.yaml
+oc create -f jmeter_grafana_svc.yaml
 
 echo "Printout Of the $tenant Objects"
 
