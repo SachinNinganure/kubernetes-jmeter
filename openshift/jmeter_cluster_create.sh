@@ -2,7 +2,7 @@
 #Create multiple Jmeter namespaces on an existing kuberntes cluster
 #Author: Sachin Ninganure
 working_dir=`pwd`
-
+tenant=`date +%d%H%M%S`
 echo "checking if oc is present"
 
 if ! hash oc 2>/dev/null
@@ -22,12 +22,13 @@ oc get project | grep -v NAME | awk '{print $1}'
 
 echo
 
-echo "Enter the name of the new project unique name, this will be used to create the namespace"
-read tenant
-echo
+#echo "Enter the name of the new project unique name, this will be used to create the namespace"
+#read tenant
+#echo
 
 #Check If namespace exists
 
+echo $tenant
 oc get project $tenant > /dev/null 2>&1
 
 if [ $? -eq 0 ]
